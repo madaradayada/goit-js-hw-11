@@ -1,12 +1,18 @@
-export const fetchImages = async (inputValue, pageNr) => {
-  return await fetch(
-    `https://pixabay.com/api/?key=29588079-fbc492831fdad231bf7222b96&q=${inputValue}&orientation=horizontal&safesearch=true&image_type=photo&per_page=40&page=${pageNr}`
-  )
+const URL = 'https://pixabay.com/api/';
+
+export async function fetchImages(searchValue, pageNumber) {
+  const SEARCH_PARAMS = new URLSearchParams({
+    key: '29748197-52bbc011c9b877a520d9a42a8',
+    q: searchValue,
+    image_type: 'photo',
+    orientation: 'horizontal',
+    safesearch: true,
+    per_page: 40,
+    page: pageNumber,
+  });
+  return await fetch(`${URL}?${SEARCH_PARAMS}`)
     .then(async response => {
-      if (!response.ok) {
-        if (response.status === 404) {
-          return [];
-        }
+      if (!response.ok || response.status === 404) {
         throw new Error(response.status);
       }
       return await response.json();
@@ -14,4 +20,4 @@ export const fetchImages = async (inputValue, pageNr) => {
     .catch(error => {
       console.error(error);
     });
-};
+}
